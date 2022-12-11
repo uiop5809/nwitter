@@ -2,7 +2,11 @@ import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
   getAuth,
+  signInWithPopup,
+  GoogleAuthProvider,
+  GithubAuthProvider,
 } from "firebase/auth";
+import { authService } from "fbase";
 import React, { useState } from "react";
 
 export default function Auth() {
@@ -41,6 +45,19 @@ export default function Auth() {
   };
 
   const toggleAccount = () => setNewAccount((prev) => !prev);
+  const onSocialClick = async (e) => {
+    const { name } = e.target;
+    let provider;
+    if (name === "google") {
+      provider = new GoogleAuthProvider();
+      console.log(provider);
+    } else if (name === "github") {
+      provider = new GithubAuthProvider();
+      console.log(provider);
+    }
+    const data = await signInWithPopup(authService, provider);
+    console.log(data);
+  };
 
   return (
     <div>
@@ -66,8 +83,12 @@ export default function Auth() {
         {newAccount ? "Login" : "Create Account"}
       </span>
       <div>
-        <button>Continue with Google</button>
-        <button>Continue with Github</button>
+        <button name="google" onClick={onSocialClick}>
+          Continue with Google
+        </button>
+        <button name="github" onClick={onSocialClick}>
+          Continue with Github
+        </button>
       </div>
     </div>
   );
