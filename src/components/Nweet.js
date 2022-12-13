@@ -12,8 +12,6 @@ export default function Nweet({ nweetObj, isOwner }) {
     if (ok) {
       const NweetTextRef = doc(dbService, "nweets", `${nweetObj.id}`);
       await deleteDoc(NweetTextRef);
-    } else {
-      console.log(ok);
     }
   };
 
